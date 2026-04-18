@@ -1,0 +1,63 @@
+{
+  "$comment": "Known-good xcframework hashes per react-native-bare-kit version. See ./README.md for how to add versions. Hashes are SHA-256 over a deterministic directory serialization (see src/util/integrity.js).",
+  "versions": {
+    "0.13.3": {
+      "BareKit.xcframework": {
+        "sha256": "3cd76b8cbdea60499938cd19797e379cc30ae581bddc86b32eb04c5bc8b6a7d7"
+      },
+      "addons": {
+        "bare-crypto.1.13.4": {
+          "sha256": "43a40b99e4bfec72d3192a858124fd9c9076fe2fcb895fbd33463feec3dcd77f"
+        },
+        "bare-dns.2.1.4": {
+          "sha256": "f7d3b28be9112ffe8bb471d703c1cb03acba0d5316600f3f7578720376ba4d87"
+        },
+        "bare-fs.4.6.0": {
+          "sha256": "c3f5beb45065544153722e6078414388358d2e908b281db3889e28bd2addb2ab"
+        },
+        "bare-inspect.3.1.4": {
+          "sha256": "426439ade90fbde5ef25f936462189493a498c2c8d7185384d672379f80caae6"
+        },
+        "bare-os.3.8.7": {
+          "sha256": "69be8d8fe1c4f4561a12cc4286f3408d0ea65ac9ce04ae8df70105f391752533"
+        },
+        "bare-pipe.4.1.5": {
+          "sha256": "38e2ce038bea92ce8e6ebad8ec8ed966e8ccd04ef9bb2b3224fce56dcd54dafa"
+        },
+        "bare-subprocess.5.2.3": {
+          "sha256": "7c5b82dd4e80ff39329adfa15e77ad326c0b4be8462db7f61094b25f5d50b78e"
+        },
+        "bare-tcp.2.2.7": {
+          "sha256": "1bc70577de1f3551ceaff28efd918039a4c5b4cdd8877fa20f81c3721d133ebe"
+        },
+        "bare-type.1.1.0": {
+          "sha256": "ff146bcb60eae9af46ff269caf63b78b7e4342a2bd17f600cc1f55d651c86f58"
+        },
+        "bare-url.2.4.0": {
+          "sha256": "2426d739acb48bae1b9abf95ae4cad655307efd28d784ce3dfb2dca92b433ef1"
+        },
+        "fs-native-extensions.1.4.5": {
+          "sha256": "2324bc1ef8dc1d161c262e4fba4af48530e44df5a33ec48ad083631418befb2e"
+        },
+        "quickbit-native.2.4.8": {
+          "sha256": "b20f6d42a0092e481b377cafbc9b768144fd0b99e8affc162554c2b8d6ff389f"
+        },
+        "rabin-native.2.0.0": {
+          "sha256": "8412061a54d3af2aa261ccd46d0bce2a542d1a6d72b55e5f116ce6665c14b378"
+        },
+        "rocksdb-native.3.15.0": {
+          "sha256": "08eb04bd4f7687d9669812e5f3dc5a86e7def451fcdd74bde240ab9077b7b598"
+        },
+        "simdle-native.1.3.9": {
+          "sha256": "74291e40bd3267bf9ee51164cf605d69f50c0f5e961f1cef7d13bfc81d1e8cf0"
+        },
+        "sodium-native.5.1.0": {
+          "sha256": "150fd9093cda28c0d80ae92c291455914e4259a3907f5a0bddc2a935d6db8a4e"
+        },
+        "udx-native.1.19.2": {
+          "sha256": "4da1d5fc5d3d24a284fb5fc63c7294d27f606687448c82f4e241a8f64aa8ddf9"
+        }
+      }
+    }
+  }
+}

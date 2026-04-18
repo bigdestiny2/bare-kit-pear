@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    name: Build & test (macOS)
+    runs-on: macos-14
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          # The repo has no package-lock.json committed; cache: 'npm' will
+          # still find the lockfile it writes at install time, but skip
+          # the warning by tolerating a missing lockfile gracefully.
+          cache-dependency-path: package.json
+
+      - name: Show tool versions
+        run: |
+          node --version
+          npm --version
+          swift --version
+
+      # Swift Package Manager artefacts are expensive to rebuild; cache
+      # the .build dir keyed on Package.swift + Package.resolved so PRs
+      # that don't touch the Swift surface reuse the previous build.
+      - name: Cache SPM build
+        uses: actions/cache@v4
+        with:
+          path: |
+            .build
+            ~/Library/Caches/org.swift.swiftpm
+          key: ${{ runner.os }}-spm-${{ hashFiles('Package.swift', 'Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-spm-
+
+      - name: Install npm deps
+        # No `npm ci` — the repo has no lockfile by design (CLI-only, no
+        # runtime npm deps). `install` is fast and idempotent here.
+        run: npm install --no-audit --no-fund
+
+      - name: Run node tests
+        run: npm test
+
+      - name: Run swift tests
+        run: swift test

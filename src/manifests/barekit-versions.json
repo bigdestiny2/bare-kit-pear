@@ -1,0 +1,17 @@
+{
+  "$comment": "Known-good hashes for bare-kit prebuilds. See ./README.md for how to add versions.",
+  "versions": {
+    "v2.0.2": {
+      "prebuilds.zip": {
+        "sha256": "b6870633c01be830433b4a86eaee2e9cd4a78ab5d69610923bfb27b8ec73b530",
+        "size": 314826089,
+        "url": "https://github.com/holepunchto/bare-kit/releases/download/v2.0.2/prebuilds.zip",
+        "added": "2026-04-17"
+      },
+      "BareKit.xcframework": {
+        "sha256": "ed3a5278c6167744c2f3bee15de3b3689f419759d8a16eb23c94c5c969393ab2",
+        "added": "2026-04-17"
+      }
+    }
+  }
+}

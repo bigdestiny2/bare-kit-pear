@@ -1,0 +1,13 @@
+# Derived — regenerate with `xcodegen generate`.
+*.xcodeproj
+
+# Fetched at build time — not committed.
+{{APP_NAME}}/Frameworks/BareKit.xcframework/
+{{APP_NAME}}/Frameworks/addons/
+
+# Xcode derived data (if a stray one lands here)
+DerivedData/
+*.xcuserdatad/
+
+# macOS
+.DS_Store

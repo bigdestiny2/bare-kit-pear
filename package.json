@@ -1,0 +1,40 @@
+{
+  "name": "bare-kit-pear",
+  "version": "0.1.0",
+  "description": "The easiest path from a Bare backend to a native iOS app — CLI + Swift package + template.",
+  "keywords": [
+    "bare",
+    "bare-kit",
+    "holepunch",
+    "ios",
+    "xcframework",
+    "p2p",
+    "hypercore"
+  ],
+  "license": "MIT",
+  "bin": {
+    "bare-kit-pear": "bin/bare-kit-pear"
+  },
+  "main": "src/cli.js",
+  "files": [
+    "bin",
+    "src",
+    "templates",
+    "BUILD.md",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node --test test/**/*.test.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "peerDependencies": {
+    "bare-pack": "^2.0.0",
+    "react-native-bare-kit": "^0.13.0"
+  },
+  "peerDependenciesMeta": {
+    "bare-pack": { "optional": true },
+    "react-native-bare-kit": { "optional": true }
+  }
+}

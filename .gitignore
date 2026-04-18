@@ -1,0 +1,30 @@
+# Swift Package Manager build output + resolved-state caches.
+# Package.resolved IS committed — it pins bare-kit-swift to a known commit
+# so CI and fresh clones all resolve the same tree.
+.build/
+.swiftpm/
+*.xcodeproj/
+*.xcworkspace/
+
+# Xcode derived data (if a stray one lands in the repo root).
+DerivedData/
+*.xcuserdatad/
+xcuserdata/
+
+# Node / npm.
+node_modules/
+npm-debug.log*
+.npm/
+
+# macOS.
+.DS_Store
+
+# Editors.
+.idea/
+.vscode/
+*.swp
+
+# Local logs + build outputs we don't want to commit even accidentally.
+*.log
+/tmp/
+/dist/

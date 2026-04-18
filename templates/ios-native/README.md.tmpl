@@ -1,0 +1,39 @@
+# {{APP_NAME}}
+
+Scaffolded by [`bare-kit-pear`](https://www.npmjs.com/package/bare-kit-pear).
+Native iOS shell (SwiftUI) on top of a Bare backend worklet.
+
+## Build
+
+```bash
+npm install --save-dev react-native-bare-kit bare-pack
+npm run ios:setup   # fetch BareKit + mirror addons + bundle backend
+npm run ios:build   # xcodegen + xcodebuild for simulator
+```
+
+Install + launch on the booted simulator:
+
+```bash
+xcrun simctl install booted \
+  "$HOME/Library/Developer/Xcode/DerivedData/{{APP_NAME}}-"*"/Build/Products/Debug-iphonesimulator/{{APP_NAME}}.app"
+xcrun simctl launch booted com.{{APP_NAME}}
+```
+
+## Add a native SwiftUI screen
+
+Drop a new file under `ios-native/{{APP_NAME}}/Sources/App/`. Xcodegen
+globs the directory — rerun `xcodegen generate`. Reach the backend via
+`@EnvironmentObject var host: AppHost` + `host.rpc?.request(...)`.
+
+## Add a new backend command
+
+1. Add a case to `Cmd` in `Sources/RPC/Protocol.swift`.
+2. Add the matching integer to the backend's rpc dispatcher
+   (typically `backend/index.js`).
+3. Return `{ id, result }` or `{ id, error }` — framing is automatic.
+
+Event IDs go in `Evt` + a matching emitter on the backend.
+
+## More
+
+See `ios-native/BUILD.md` for the deeper recipe and troubleshooting.
