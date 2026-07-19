@@ -22,6 +22,9 @@ Result: `npx bare-kit-pear init MyApp && cd MyApp && npm run ios` produces a wor
 | iOS simulator smoke test | ⏳ pending |
 | Android | ❌ out of scope for v0 |
 
+Current local proof and blockers are tracked in
+`CURRENT_STATUS_AUDIT_2026-06-24.md`.
+
 The recipe was extracted from [PearBrowser](../PearBrowser/ios-native/BUILD.md), which boots end-to-end on iPhone 17 Pro simulator with all 17 addons linked (sodium-native, udx-native, rocksdb-native, …).
 
 ---
@@ -73,7 +76,16 @@ Steps 1–4 are idempotent — rerun `fetch`/`addons`/`bundle` any time `BareKit
 
 ## How it works — the recipe
 
-The short version: **don't cross-compile addons**. Piggyback on [`react-native-bare-kit`](https://www.npmjs.com/package/react-native-bare-kit), whose postinstall hook already runs `bare-link` and ships the 17 most common Bare addons as pre-built xcframeworks in `node_modules/react-native-bare-kit/ios/addons/`. `bare-kit-pear addons` mirrors those into your `ios-native/<App>/Frameworks/addons/`, and the template `project.yml` lists each one as an embedded framework dependency.
+The short version: **don't cross-compile addons**. Piggyback on a verified [`react-native-bare-kit`](https://www.npmjs.com/package/react-native-bare-kit) artifact source whose postinstall/link step has produced the common Bare addons as pre-built xcframeworks in `node_modules/react-native-bare-kit/ios/addons/`. `bare-kit-pear addons` mirrors those into your `ios-native/<App>/Frameworks/addons/`, and the template `project.yml` lists each one as an embedded framework dependency.
+
+Known packaging caveat: a clean npm install of `react-native-bare-kit@0.13.3`
+on 2026-06-24 installed `BareKit.xcframework` but did not include
+`ios/addons/*.xcframework` by default. `bare-kit-pear addons --link-missing`
+can run `react-native-bare-kit/ios/link.mjs` to generate addons from native
+packages listed in `dependencies` or `optionalDependencies`; release mode still
+hashes the generated output before trusting it. In the current proof, that
+fresh linked output generated 18 addons and failed strict manifest validation
+against the reviewed PearBrowser-derived 17-addon set.
 
 At runtime, `bare-kit` resolves `require('sodium-native')` etc. through `bare_addon_load_dynamic`, which finds the addon inside `<App>.app/Frameworks/`.
 
@@ -121,7 +133,7 @@ You define your own `Cmd` / `Evt` enums (the command IDs your backend understand
 |---|---|
 | `bare-kit-pear init <AppName>` | Copy `templates/ios-native/` into `./ios-native/`, substitute `{{APP_NAME}}` with the provided name, add `barekit:*` scripts to your `package.json`. |
 | `bare-kit-pear fetch [--version v2.0.2]` | Download `prebuilds.zip` from the `holepunchto/bare-kit` GitHub release and extract `apple-javascriptcore/BareKit.xcframework` to `ios-native/<App>/Frameworks/`. |
-| `bare-kit-pear addons` | `cp -R` every `.xcframework` from `node_modules/react-native-bare-kit/ios/addons/` into `ios-native/<App>/Frameworks/addons/`. Warns if any are missing from `project.yml`. |
+| `bare-kit-pear addons [--strict-manifest \| --release] [--link-missing]` | Mirrors every `.xcframework` from `node_modules/react-native-bare-kit/ios/addons/` into `ios-native/<App>/Frameworks/addons/`. `--link-missing` first runs `react-native-bare-kit/ios/link.mjs` when that addon directory is absent or empty. Development mode warns on manifest drift; strict/release mode fails on unknown versions, unknown xcframeworks, or hash mismatches. |
 | `bare-kit-pear bundle [--entry backend/index.js]` | Runs `bare-pack --linked --host ios-arm64 <entry> -o backend/dist/backend.ios.bundle`. |
 | `bare-kit-pear doctor` | Verifies `project.yml` addon refs match `Frameworks/addons/` contents. Exit 1 on drift. |
 
@@ -194,7 +206,13 @@ ios-native/
 
 - **iOS only.** Android has a different story (no dynamic xcframework loading; we'd wrap `bare-kit`'s `.aar`). Out of scope until v0 ships.
 - **JavaScriptCore variant only.** The V8 variant has JIT and gets App-Store-rejected. `fetch` always pulls the JSC build.
-- **Addon set is whatever `react-native-bare-kit` ships.** At time of writing that's 17 addons covering the Hypercore/Hyperswarm stack. Adding a custom C/C++ addon means running `bare-link` yourself — out of scope for v0.
+- **Addon set is whatever the verified `react-native-bare-kit` artifact source
+  supplies.** The local PearBrowser artifact source currently has 17 addons
+  covering the Hypercore/Hyperswarm stack, but a clean npm install of
+  `react-native-bare-kit@0.13.3` did not include `ios/addons` until
+  `addons --link-missing` generated them. Adding a custom C/C++ addon or
+  repairing a missing package artifact source means running or sourcing
+  `bare-link` output and pinning the resulting hashes before release.
 - **Minimum iOS: 16.0.** Required by `bare-kit-swift`.
 
 ---
